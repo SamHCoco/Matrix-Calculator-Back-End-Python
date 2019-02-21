@@ -3,28 +3,32 @@ class Matrix:
     def __init__(self, rows, columns, name):
         self.rows = rows
         self.columns = columns
+        self.determinant = None
         self.name = name
         self.matrix = []
         self.create_matrix()
-        self.display_matrix()
+        Matrix.display_matrix(self.matrix)
 
     def create_matrix(self):
-        # Inserts lists to existing empty list. Each appended lists contains the row of a matrix
         for i in range(0, self.rows):
             self.matrix.append([])
 
         # Prompts the user to input their desired matrix row by row """
         print("Enter the elements of matrix " + self.name + " by row:")
+
         for i in range(0, len(self.matrix)):    # len(self.matrix) = the number of rows of the matrix
             for j in range(0, self.columns):
                 self.matrix[i].append(int(input()))
 
-        # Displays the user's inputted matrix"""
-    def display_matrix(self):
-        print("Matrix " + self.name + ":")
-        for i in range(0, len(self.matrix)):  # len(self.matrix) = the number of rows of the matrix
-            for j in range(0, self.columns):
-                print(str(self.matrix[i][j]), end='  ')
+    # Displays relevant matrix to the user
+    @staticmethod
+    def display_matrix(matrix):
+        rows = len(matrix)
+        columns = len(matrix[0])
+
+        for i in range(0, rows):
+            for j in range(0, columns):
+                print(str(matrix[i][j]), end='  ')
             print("")
         print("*" * 200)  # star line to improve output readability
 
@@ -32,58 +36,82 @@ class Matrix:
     def add_matrices(x, y):
         added_matrix = []
         if x.rows == y.rows and x.columns == y.columns:
+
             # creates empty matrix that will contain result of addition
             for i in range(0, x.rows):
                 added_matrix.append([])
+
             # performs matrix addition calculation
             for i in range(0, x.rows):
                 for j in range(0, y.columns):
                     added_matrix[i].append(x.matrix[i][j] + y.matrix[i][j])
 
             print("RESULT OF ADDITION: " + x.name + " + " + y.name)
-            for i in range(0, 2):
-                for j in range(0, 2):
-                    print(str(added_matrix[i][j]), end='  ')
-                print("")
+            Matrix.display_matrix(added_matrix)
         else:
             print("Matrix " + x.name + " and " + y.name + " must have the same dimensions")
 
-    def calculate_determinant(self):
-        first_row = [self.matrix[0]]  # 1st row of the matrix
-        other_rows = [self.matrix[1], self.matrix[2]]  # 2nd and 3rd rows of the matrix
-        cofactor_matrices = []  # The elements of the cofactor matrices of the matrix
-        matrix_cofactors = []  # The actual cofactors of the matrix
+    def matrix_determinant(self):
+        if self.find_matrix_size() == 2:
+            self.determinant = self.calculate_2x2_determinant()
+            print("Matrix " + self.name + " Determinant = " + str(self.determinant))
 
-        # Determinant for a 2x2 matrix
-        if self.rows == 2 and self.columns == 2:
-            result = (self.matrix[0][0] * self.matrix[1][1]) - (self.matrix[1][0] * self.matrix[0][1])
+        elif self.find_matrix_size() == 3:
+            first_row = self.matrix[0]
+            cofactor_matrices = self.extract_2x2_cofactor_matrices()
+            print("cofactor matrices: {}".format(cofactor_matrices))
+            original_matrix = self.matrix
+            self.matrix = cofactor_matrices
 
-        # Determinant for a 3x3 matrix
-        elif self.rows == 3 and self.columns == 3:
-            for row in first_row:
-                for value_1 in row:
-                    for element in other_rows:
-                        for value_2 in element:
-                            if row.index(value_1) != element.index(value_2):
-                                cofactor_matrices.append(value_2)
-
-            print(cofactor_matrices)  # for debugging
-
-            # Calculates the 2x2 determinant of each cofactor matrix
-            for i in range(0, 12, 4):
-                cofactor_matrix = cofactor_matrices[i: i + 4]
-                matrix_cofactors.append(
-                    cofactor_matrix[0] * cofactor_matrix[3] - cofactor_matrix[2] * cofactor_matrix[1])
-            print("Matrix " + self.name + " cofactors: " + str(matrix_cofactors))
-
-            # Calculates the final result (determinant of the 3x3 matrix)
-            result = 0
+            self.determinant = 0
             for i in range(0, 3):
-                result += ((-1) ** i) * matrix_cofactors[i] * self.matrix[0][i]
-            print("Det({}) = {}".format(self.name, result))
+                minor = self.calculate_2x2_determinant()
+                sign = (-1)**(i + 2)
+                self.determinant += sign * first_row[i] * minor
+                if i != 2:
+                    del self.matrix[0]
+                    del self.matrix[0]
+            print("Matrix {} Determinant = {}".format(self.name, self.determinant))
+            self.matrix = original_matrix
 
-m1 = Matrix(3, 3, "A")
-m1.calculate_determinant()
+    def find_matrix_size(self):
+        if self.rows == 2 and self.columns == 2:
+            return 2
+
+        elif self.rows == 3 and self.columns == 3:
+            return 3
+
+    def calculate_2x2_determinant(self):
+        determinant = (self.matrix[0][0] * self.matrix[1][1]) - (self.matrix[1][0] * self.matrix[0][1])
+        return determinant
+
+    def extract_2x2_cofactor_matrices(self):
+        iteration = 1
+        extract_result = [[], []]
+        all_cofactor_matrices = []
+        while iteration <= 3:
+                for i in range(0, 2):
+                    for j in range(0, 2):
+                        # 3 cases for extracting the 3 cofactor matrices
+                        if iteration == 1:
+                            extract_result[i].append(self.matrix[i + 1][j + 1])
+                        elif iteration == 2:
+                            if j == 1:
+                                extract_result[i].append(self.matrix[i + 1][j + 1])
+                            else:
+                                extract_result[i].append(self.matrix[i + 1][j])
+                        if iteration == 3:
+                            extract_result[i].append(self.matrix[i + 1][j])
+
+                # Saves the found cofactor matrices
+                for element in extract_result:
+                    all_cofactor_matrices.append(element)
+
+                extract_result = [[], []]
+                iteration += 1
+
+        return all_cofactor_matrices
 
 
-
+m = Matrix(3, 3, "A")
+m.matrix_determinant()
