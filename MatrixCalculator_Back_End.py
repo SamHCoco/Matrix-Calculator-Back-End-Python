@@ -10,7 +10,7 @@ class Matrix:
     """
 
     def __init__(self, rows, columns, name):
-        """create matrix instance
+        """create matrix instance.
 
         Args:
            rows (int) -- matrix rows
@@ -30,7 +30,7 @@ class Matrix:
         for i in range(0, self.rows):
             self.matrix.append([])
         print("Enter the elements of matrix " + self.name + " by row:")
-        for i in range(0, self.rows):    # len(self.matrix) = the number of rows of the matrix
+        for i in range(0, self.rows):   
             for j in range(0, self.columns):
                 self.matrix[i].append(float(input()))
 
@@ -68,7 +68,10 @@ class Matrix:
             print("Matrix " + x.name + " and " + y.name + " must have the same dimensions")
 
     def find_matrix_size(self):
-        """Determine dimensions of matrix."""
+        """Determine dimensions of an NxN matrix (N >= 2).
+        
+           Returns: dimension of matrix (int value).
+        """
         if self.rows == 2 and self.columns == 2:
             return 2
         elif self.rows == 3 and self.columns == 3:
@@ -109,7 +112,7 @@ class Matrix:
     def extract_2x2_cofactor_matrices(self):
         """Extract the cofactor matrices of a 3x3 matrix
 
-        returns: list a of 3 cofactor matrices (each 2x2) by row."""
+        returns: list of 3 cofactor matrices (each 2x2), by row."""
         iteration = 1
         extract_result = [[], []]
         all_cofactor_matrices = []
