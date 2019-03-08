@@ -1,6 +1,22 @@
 class Matrix:
+    """ Define a matrix and its operations (Add, multiply etc).
+
+    Attributes:
+        rows (int) -- the number rows in the matrix
+        columns (int) -- the number of columns in the matrix
+        determinant (float) -- the matrix determinant
+        name (string) -- the name of matrix
+        matrix (list) -- the matrix values
+    """
 
     def __init__(self, rows, columns, name):
+        """create matrix instance
+
+        Args:
+           rows (int) -- matrix rows
+           columns (int)-- matrix columns
+           name (string) -- matrix name.
+        """
         self.rows = rows
         self.columns = columns
         self.determinant = None
@@ -10,6 +26,7 @@ class Matrix:
         Matrix.display_matrix(self.matrix)
 
     def create_matrix(self):
+        """Input matrix values."""
         for i in range(0, self.rows):
             self.matrix.append([])
         print("Enter the elements of matrix " + self.name + " by row:")
@@ -19,6 +36,7 @@ class Matrix:
 
     @staticmethod
     def display_matrix(matrix):
+        """Display inputted matrix."""
         rows = len(matrix)
         columns = len(matrix[0])
         for i in range(0, rows):
@@ -29,6 +47,12 @@ class Matrix:
 
     @staticmethod
     def add_matrices(x, y):
+        """Add two matrices and display the result.
+
+        Args:
+           x -- A matrix of size NxN (N >= 2)
+           y -- A matrix of size NxN (N >= 2)
+        """
         added_matrix = []
         if x.rows == y.rows and x.columns == y.columns:
             # creates empty matrix that will contain result of addition
@@ -44,12 +68,14 @@ class Matrix:
             print("Matrix " + x.name + " and " + y.name + " must have the same dimensions")
 
     def find_matrix_size(self):
+        """Determine dimensions of matrix."""
         if self.rows == 2 and self.columns == 2:
             return 2
         elif self.rows == 3 and self.columns == 3:
             return 3
 
-    def matrix_determinant(self):
+    def determinant(self):
+        """Calculate matrix determinant."""
         if self.find_matrix_size() == 2:
             self.determinant = self.calculate_2x2_determinant()
             print("Matrix {} Determinant = {:.3f}".format(self.name, self.determinant))
@@ -58,10 +84,12 @@ class Matrix:
             print("Matrix {} Determinant = {:.3f}".format(self.name, self.determinant))
 
     def calculate_2x2_determinant(self):
+        """Calculate 2x2 matrix determinant."""
         determinant = (self.matrix[0][0] * self.matrix[1][1]) - (self.matrix[1][0] * self.matrix[0][1])
         return determinant
 
     def calculate_3x3_determinant(self):
+        """Calculate 3x3 matrix determinant."""
         first_row = self.matrix[0]
         cofactor_matrices = self.extract_2x2_cofactor_matrices()
         print("cofactor matrices: {}".format(cofactor_matrices))
@@ -79,6 +107,9 @@ class Matrix:
         return determinant
 
     def extract_2x2_cofactor_matrices(self):
+        """Extract the cofactor matrices of a 3x3 matrix
+
+        returns: list a of 3 cofactor matrices (each 2x2) by row."""
         iteration = 1
         extract_result = [[], []]
         all_cofactor_matrices = []
@@ -102,7 +133,3 @@ class Matrix:
                 extract_result = [[], []]
                 iteration += 1
         return all_cofactor_matrices
-
-
-m = Matrix(3, 3, "A")
-m.matrix_determinant()
