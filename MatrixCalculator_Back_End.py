@@ -1,36 +1,36 @@
 class Matrix:
     """ Define a matrix and its operations (Add, multiply etc).
-
     Attributes:
         rows (int) -- the number rows in the matrix
-        columns (int) -- the number of columns in the matrix
-        determinant (float) -- the matrix determinant
-        name (string) -- the name of matrix
+        columns (int)-- the number of columns in the matrix
+        determinant (float)-- the matrix determinant
+        name (string)-- the name of matrix
         matrix (list) -- the matrix values
     """
 
-    def __init__(self, rows, columns, name):
+    def __init__(self, rows, columns, name, testing=True):
         """create matrix instance.
-
         Args:
            rows (int) -- matrix rows
            columns (int)-- matrix columns
            name (string) -- matrix name.
+           testing (Boolean) -- For unit testing. Removed later.
         """
         self.rows = rows
         self.columns = columns
         self.determinant = None
         self.name = name
         self.matrix = []
-        self.create_matrix()
-        Matrix.display_matrix(self.matrix)
+        if not testing:
+            self.create_matrix()
+            Matrix.display_matrix(self.matrix)
 
     def create_matrix(self):
         """Input matrix values."""
         for i in range(0, self.rows):
             self.matrix.append([])
         print("Enter the elements of matrix " + self.name + " by row:")
-        for i in range(0, self.rows):   
+        for i in range(0, self.rows):
             for j in range(0, self.columns):
                 self.matrix[i].append(float(input()))
 
@@ -48,10 +48,9 @@ class Matrix:
     @staticmethod
     def add_matrices(x, y):
         """Add two matrices and display the result.
-
         Args:
-           x -- A matrix of size NxN (N >= 2)
-           y -- A matrix of size NxN (N >= 2)
+           x -- A matrix of size NxN (N >= 2).
+           y -- A matrix of size NxN (N >= 2).
         """
         added_matrix = []
         if x.rows == y.rows and x.columns == y.columns:
@@ -66,10 +65,30 @@ class Matrix:
             Matrix.display_matrix(added_matrix)
         else:
             print("Matrix " + x.name + " and " + y.name + " must have the same dimensions")
+        return added_matrix
+
+    @staticmethod
+    def scalar_multiply(scalar, matrix):
+        """Multiply a matrix by a scalar and print result.
+        Args:
+            scalar -- the value that will multiply the matrix.
+            matrix -- the matrix to be multiplied by scalar.
+        """
+        multiplied_matrix = []
+        # Creates matrix needed to store final result
+        for i in range(0, matrix.rows):
+            multiplied_matrix.append([])
+        # performs multiplication calculation
+        for i in range(0, matrix.rows):
+            for j in range(0, matrix.columns):
+                multiplied_matrix[i].append(scalar * matrix.matrix[i][j])
+        print("RESULT OF SCALAR MULTIPLICATION: {} x {}".format(scalar, matrix.name))
+        Matrix.display_matrix(multiplied_matrix)
+        return multiplied_matrix
 
     def find_matrix_size(self):
         """Determine dimensions of an NxN matrix (N >= 2).
-        
+
            Returns: dimension of matrix (int value).
         """
         if self.rows == 2 and self.columns == 2:
@@ -110,29 +129,29 @@ class Matrix:
         return determinant
 
     def extract_2x2_cofactor_matrices(self):
-        """Extract the cofactor matrices of a 3x3 matrix
+        """Extract the cofactor matrices of a 3x3 matrix.
 
         returns: list of 3 cofactor matrices (each 2x2), by row."""
         iteration = 1
         extract_result = [[], []]
         all_cofactor_matrices = []
         while iteration <= 3:
-                for i in range(0, 2):
-                    for j in range(0, 2):
-                        # 3 cases for extracting the 3 cofactor matrices
-                        if iteration == 1:
+            for i in range(0, 2):
+                for j in range(0, 2):
+                    # 3 cases for extracting the 3 cofactor matrices
+                    if iteration == 1:
+                        extract_result[i].append(self.matrix[i + 1][j + 1])
+                    elif iteration == 2:
+                        if j == 1:
                             extract_result[i].append(self.matrix[i + 1][j + 1])
-                        elif iteration == 2:
-                            if j == 1:
-                                extract_result[i].append(self.matrix[i + 1][j + 1])
-                            else:
-                                extract_result[i].append(self.matrix[i + 1][j])
-                        if iteration == 3:
+                        else:
                             extract_result[i].append(self.matrix[i + 1][j])
+                    if iteration == 3:
+                        extract_result[i].append(self.matrix[i + 1][j])
 
-                # Saves the found cofactor matrices
-                for element in extract_result:
-                    all_cofactor_matrices.append(element)
-                extract_result = [[], []]
-                iteration += 1
+            # Saves the found cofactor matrices
+            for element in extract_result:
+                all_cofactor_matrices.append(element)
+            extract_result = [[], []]
+            iteration += 1
         return all_cofactor_matrices
