@@ -2,21 +2,21 @@ class Matrix:
     """ Define a matrix and its operations (Add, multiply etc), with all results to 3 d.p.
 
     Attributes:
-        rows (int) -- Number rows in the matrix.
-        columns (int)-- Number of columns in the matrix.
-        determinant (float)-- Matrix determinant.
-        name (string)-- Name of matrix.
-        matrix (list) -- Contains matrix elements.
+    rows (int) -- number rows in the matrix
+    columns (int)-- number of columns in the matrix
+    determinant (float)-- matrix determinant
+    name (string)-- name of matrix
+    matrix (list) -- contains matrix elements
     """
 
     def __init__(self, rows, columns, name, testing=True):
         """Create matrix instance.
 
-        Args:
-           rows (int) -- Matrix rows.
-           columns (int)-- Matrix columns.
-           name (string) -- Matrix name.
-           testing (Boolean) -- For unit testing. Remove later.
+       Args:
+       rows (int) -- matrix rows
+       columns (int)-- matrix columns
+       name (string) -- matrix name
+       testing (Boolean) -- For unit testing. Remove later.
         """
         self.rows = rows
         self.columns = columns
@@ -48,9 +48,9 @@ class Matrix:
         """Add another matrix, x, to the matrix.
 
         Args:
-           x -- A matrix of size NxN (N >= 1).
+        x -- a matrix of size NxN (N >= 1)
            
-        Return: Added matrices.
+        Return: added matrices
         """
         if x.rows == self.rows and x.columns == self.columns:
             # performs matrix addition calculation
@@ -67,9 +67,9 @@ class Matrix:
         """Multiply matrix by scalar and print result.
 
         Args:
-            scalar -- The value that will multiply the matrix.
+        scalar -- the value that will multiply the matrix
             
-        Returns: Scalar multiplied matrix.
+        Returns: scalar multiplied matrix
         """
         # performs scalar multiplication calculation
         for i in range(0, self.rows):
@@ -82,9 +82,9 @@ class Matrix:
     def multiply(self, matrix):
         """Multiply matrix by another matrix A*B where B = matrix parameter.
         Args:
-            matrix -- the matrix that will multiply the user's matrix
+        matrix -- the matrix that will multiply the user's matrix
             
-        Return: Multiplied matrix.
+        Return: multiplied matrices
         """
         result = []
         result_matrix = []
@@ -118,10 +118,10 @@ class Matrix:
         """Calculate dot product of two vectors.
 
         Args:
-            vector_1 -- first vector of dot product
-            vector_2 -- second vector of dot product
+        vector_1 -- first vector of dot product
+        vector_2 -- second vector of dot product
 
-        Return: Dot product to 3 d.p, or -1 if vectors not same size.
+        Return: dot product to 3 d.p, or -1 if vectors not same size
         """
         result = 0
         if len(vector_1) == len(vector_2):
@@ -135,7 +135,7 @@ class Matrix:
     def find_matrix_size(self):
         """Determine dimensions of an NxN matrix (N >= 2).
 
-           Return: 2 if matrix 2x2, 3 if matrix 3x3 or -1 if neither.
+           Return: 2 if matrix 2x2, 3 if matrix 3x3 or -1 if neither
         """
         if self.rows == 2 and self.columns == 2:
             return 2
@@ -147,7 +147,7 @@ class Matrix:
     def find_determinant(self):
         """Calculate matrix determinant.
         
-        Return: Determinant, rounded to 3 d.p.
+        Return: determinant, rounded to 3 d.p
         """
         if self.find_matrix_size() == 2:
             self.determinant = self.calculate_2x2_determinant()
@@ -160,14 +160,14 @@ class Matrix:
     def calculate_2x2_determinant(self):
         """Calculate 2x2 matrix determinant.
         
-        Return: Determinant of 2x2 matrix (not rounded to 3 d.p).
+        Return: determinant of 2x2 matrix (not rounded to 3 d.p)
         """
         return (self.matrix[0][0] * self.matrix[1][1]) - (self.matrix[1][0] * self.matrix[0][1])
 
     def calculate_3x3_determinant(self):
         """Calculate 3x3 matrix determinant.
         
-        Return: Determinant of 3x3 matrix (not rounded to 3 d.p).
+        Return: determinant of 3x3 matrix (not rounded to 3 d.p)
         """
         first_row = self.matrix[0]
         cofactor_matrices = self.extract_2x2_cofactor_matrices()
@@ -189,7 +189,8 @@ class Matrix:
     def extract_2x2_cofactor_matrices(self):
         """Extract the cofactor matrices of a 3x3 matrix.
 
-        returns: List of all cofactor matrices (each 2x2), by row."""
+        Return: list of all cofactor matrices (each 2x2), by row
+        """
         iteration = 1
         extract_result = [[], []]
         all_cofactor_matrices = []
