@@ -1,12 +1,31 @@
 class Matrix:
-    """ Define a matrix and its operations (Add, multiply etc), with all results to 3 d.p.
+    """ Defines a matrix and its operations (Add, multiply etc), with all results to 3 d.p.
 
-    Attributes:
+    Attributes
+    ----------
     rows (int) -- number rows in the matrix
     columns (int)-- number of columns in the matrix
     determinant (float)-- matrix determinant
     name (string)-- name of matrix
     matrix (list) -- contains matrix elements
+
+    Methods
+    -------
+    print_matrix() - Prints matrix.
+
+    add(m) - Adds m to matrix.
+
+    scalar_multiply(a) - Multiplies matrix by scalar value a.
+
+     multiply(m) - Multiplies matrix with matrix m.
+
+     dot_product(v1, v2) - Calculates the dot product of two vectors.
+
+     find_matrix_size() - Returns number of rows and columns in matrix
+
+     find_determinant() - Returns determinant of matrix
+
+     extract_2x2_minor_matrices() - Returns the minor matrices needed to calculate 3x3 matrix cofactors
     """
 
     def __init__(self, rows, columns, name, testing=False):
@@ -24,10 +43,10 @@ class Matrix:
         self.name = name
         self.matrix = []
         if not testing:
-            self.create_matrix()
+            self._create_matrix()
             self.print_matrix()
 
-    def create_matrix(self):
+    def _create_matrix(self):
         """Input matrix values."""
         for i in range(0, self.rows):
             self.matrix.append([])
@@ -48,7 +67,7 @@ class Matrix:
         """Add another matrix, x, to the matrix.
 
         Args:
-        x -- a matrix of size NxN (N >= 1)
+        x (list) -- a matrix of size NxN (N >= 1)
            
         Return: added matrices
         """
@@ -67,7 +86,7 @@ class Matrix:
         """Multiply matrix by scalar and print result.
 
         Args:
-        scalar -- the value that will multiply the matrix
+        scalar (float/int) -- the value that will multiply the matrix
             
         Returns: scalar multiplied matrix
         """
@@ -82,7 +101,7 @@ class Matrix:
     def multiply(self, matrix):
         """Multiply matrix by another matrix A*B where B = matrix parameter.
         Args:
-        matrix -- the matrix that will multiply the user's matrix
+        matrix (list) -- the matrix that will multiply the user's matrix
             
         Return: multiplied matrices
         """
@@ -118,8 +137,8 @@ class Matrix:
         """Calculate dot product of two vectors.
 
         Args:
-        vector_1 -- first vector of dot product
-        vector_2 -- second vector of dot product
+        vector_1 (list) -- first vector of dot product
+        vector_2 (list) -- second vector of dot product
 
         Return: dot product to 3 d.p, or -1 if vectors not same size
         """
@@ -215,4 +234,3 @@ class Matrix:
                 extract_result = [[], []]
                 iteration += 1
             return all_cofactor_matrices
-
